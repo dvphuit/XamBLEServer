@@ -145,21 +145,17 @@ namespace XamBLEServer
         public override void OnCharacteristicWriteRequest(BluetoothDevice device, int requestId, BluetoothGattCharacteristic characteristic, bool preparedWrite, bool responseNeeded, int offset, byte[] value)
         {
             base.OnCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
-            var result = "";
-            try
+            Log.Debug("TEST", "value " + value);
+
+            if(value != null || value.Length != 0)
             {
-                result = Encoding.UTF8.GetString(value);
-            }
-            catch(Exception e)
-            {
-                result = "Error";
-            }
-            finally
-            {
-                Log.Debug("TEST", "value " + result);
+               string result = Encoding.UTF8.GetString(value);
                 _delegate?.Invoke(result);
             }
-           
+            else
+            {
+                _delegate?.Invoke("Error");
+            }
         }
 
     }
